@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="ADMIN (generated)" id="1590852545789-2">
+        <createTable tableName="department">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="departmentPK"/>
+            </column>
+            <column name="department_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ADMIN (generated)" id="1590852545789-3">
+        <createTable tableName="equiqment_group">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="equiqment_groupPK"/>
+            </column>
+            <column name="name_group" type="VARCHAR(255)"/>
+            <column name="department_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ADMIN (generated)" id="1590852545789-4">
+        <createTable tableName="user_extra">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_extraPK"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="equiqment_group_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ADMIN (generated)" id="1590852545789-5">
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="equiqment_group" constraintName="FKcmtxwpnryc4hx2kcgse1hwwsn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="department" validate="true"/>
+    </changeSet>
+    <changeSet author="ADMIN (generated)" id="1590852545789-6">
+        <addForeignKeyConstraint baseColumnNames="equiqment_group_id" baseTableName="user_extra" constraintName="FKfdhvarc9ad3cpsmhbpnfj0mp7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="equiqment_group" validate="true"/>
+    </changeSet>
+    <changeSet author="ADMIN (generated)" id="1590852545789-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_extra" constraintName="FKlq95v3mpj1gjo80ugr9oqoi0h" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    
+    <!-- <changeSet author="ADMIN (generated)" id="1590852545789-1">
+        <alterSequence sequenceName="sequence_generator"/>
+    </changeSet> -->
+</databaseChangeLog>

@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.thupx.tms"
+    },
+    "jhipsterVersion": "6.9.0",
+    "applicationType": "monolith",
+    "baseName": "TaskManagementSoftware_server",
+    "packageName": "com.thupx.tms",
+    "packageFolder": "com/thupx/tms",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "OTA2NDMwOTlkNjI5ODE1NzFhZDc3ODE3NTMwMzY2Yjg2ZjdjMTM0ZDJkNTFjZjljNWQ2ZWM5OTk1MTc0YWI0NTI0OGMwZDYyYmU5NjhjN2E0ZjMxMDMyODZlODg4NDI4ZWQxZmQzNmJmZjY0NGU3ZjZiYjk1ZWQ0MmQwNGVhNjc=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "creationTimestamp": 1590813325387,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": [],
+    "lastLiquibaseTimestamp": 1590937773000
+  }
+}

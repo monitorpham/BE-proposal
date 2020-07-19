@@ -1,0 +1,44 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "user",
+      "otherEntityName": "user",
+      "relationshipType": "one-to-one",
+      "otherEntityField": "login",
+      "ownerSide": true,
+      "useJPADerivedIdentifier": true,
+      "otherEntityRelationshipName": "userExtra"
+    },
+    {
+      "relationshipName": "equiqmentGroup",
+      "otherEntityName": "equiqmentGroup",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "userExtra"
+    },
+    {
+      "relationshipName": "equiqmentGroup",
+      "otherEntityName": "equiqmentGroup",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "userExtra"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20200530095645",
+  "dto": "mapstruct",
+  "searchEngine": false,
+  "service": "serviceImpl",
+  "entityTableName": "user_extra",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "no"
+}

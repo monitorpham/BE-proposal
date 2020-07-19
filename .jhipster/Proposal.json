@@ -1,0 +1,59 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "hospitalDepartment",
+      "otherEntityName": "hospitalDepartment",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "proposal"
+    },
+    {
+      "relationshipName": "userExtra",
+      "otherEntityName": "userExtra",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "proposal"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "contentProposal",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "note",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "remainingDate",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "additionalDate",
+      "fieldType": "Integer"
+    }
+  ],
+  "changelogDate": "20200531120122",
+  "dto": "mapstruct",
+  "searchEngine": false,
+  "service": "serviceImpl",
+  "entityTableName": "proposal",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "no"
+}

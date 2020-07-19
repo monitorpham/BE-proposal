@@ -1,0 +1,28 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "department",
+      "otherEntityName": "department",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "equiqmentGroup"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "nameGroup",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20200530145933",
+  "dto": "mapstruct",
+  "searchEngine": false,
+  "service": "serviceImpl",
+  "entityTableName": "equiqment_group",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "no"
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity ProgessDetaill.
+    -->
+    <changeSet id="20200531150743-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="proposal_id"
+                                 baseTableName="progess_detaill"
+                                 constraintName="fk_progess_detaill_proposal_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="proposal"/>
+
+        <addForeignKeyConstraint baseColumnNames="progress_id"
+                                 baseTableName="progess_detaill"
+                                 constraintName="fk_progess_detaill_progress_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="progress"/>
+
+    </changeSet>
+</databaseChangeLog>

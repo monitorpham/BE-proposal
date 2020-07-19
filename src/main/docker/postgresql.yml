@@ -1,0 +1,11 @@
+version: '2'
+services:
+  taskmanagementsoftware_server-postgresql:
+    image: postgres:12.1
+    # volumes:
+    #     - ~/volumes/jhipster/TaskManagementSoftware_server/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=TaskManagementSoftware_server
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432
