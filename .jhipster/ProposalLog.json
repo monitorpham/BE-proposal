@@ -1,0 +1,28 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "proposal",
+      "otherEntityName": "proposal",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "proposalLog"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "dateLog",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20200719173000",
+  "dto": "mapstruct",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "proposal_log",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "no"
+}

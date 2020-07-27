@@ -15,7 +15,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="content_proposal" type="varchar(255)">
+            <column name="content_proposal" type="varchar(5000)">
                 <constraints nullable="true" />
             </column>
             <column name="start_date" type="datetime">
@@ -27,7 +27,7 @@
             <column name="status" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="note" type="varchar(255)">
+            <column name="note" type="varchar(5000)">
                 <constraints nullable="true" />
             </column>
             <column name="remaining_date" type="integer">
@@ -39,7 +39,7 @@
             <column name="hospital_department_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="user_extra_id" type="bigint">
+            <column name="user_extra_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
