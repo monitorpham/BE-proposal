@@ -349,6 +349,8 @@ public class ProposalResource {
 //				}
 //		}		
 		
+
+		
 		for(ProgressStage progressStage : progressStages) {
 //			if(!progressStage.getId().equals(new Long(0)) && !progressStage.getId().equals(new Long(8))) {
 			ProgessDetaillDTO detaillDTO = new ProgessDetaillDTO();
@@ -363,9 +365,20 @@ public class ProposalResource {
 //			}
 		}	
 		
+		for(int i = progressStages.size()-1; i > 0; i--) {
+			if(progressStages.get(i).getTimeEnd()!=null) {
+				ProposalDTO proposalDTO = proposalService.findOne(proposalId).get();
+				proposalDTO.setEndDate(progressStages.get(i).getTimeEnd());
+				proposalDTO.setNote(progressStages.get(i).getNote());
+				proposalService.save(proposalDTO);
+//				log.debug("dulog:{}", progressStages.get(i).getTimeEnd());
+				break;
+			}
+		}
+		
 		if(progressStages.get(progressStages.size() - 1).getTimeEnd() != null ) {
 			ProposalDTO proposalDTO = proposalService.findOne(proposalId).get();
-			proposalDTO.setEndDate(progressStages.get(progressStages.size() - 1).getTimeEnd());
+//			proposalDTO.setEndDate(progressStages.get(progressStages.size() - 1).getTimeEnd());
 			proposalDTO.setStatus(true);
 			proposalService.save(proposalDTO);
 		}
