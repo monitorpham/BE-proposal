@@ -27,6 +27,8 @@ public interface ProposalService {
     List<ProposalDTO> findAllDTO();
 
     List<Proposal> findAll();
+    
+    List<Proposal> findStatus(Boolean status);
     /**
      * Get the "id" proposal.
      *

@@ -96,4 +96,13 @@ public class ProposalServiceImpl implements ProposalService {
 
         proposalRepository.deleteById(id);
     }
+
+	@Override
+	public List<Proposal> findStatus(Boolean status) {
+		// TODO Auto-generated method stub
+		log.debug("Request to get all Proposals status");
+		return proposalRepository.findByStatus(status).stream()
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
 }

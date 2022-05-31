@@ -324,6 +324,92 @@ public class ProposalResource {
 		return progressStages;
 	}
 	
+	@GetMapping("/get-All-Data-By-Status/{status}")
+	public List<ProposalData2> getAllDataByStatus(@RequestParam Boolean status) {
+		log.debug("REST request to get-All-Data-By-Status");
+		long countDays = 0;
+		
+		List<ProgressDTO> progressDTOs = progressService.findAll(); 
+		
+		for (ProgressDTO progressDTO : progressDTOs) {
+			countDays = countDays + progressDTO.getLimit();
+		}
+		
+		
+		
+		List<Proposal> proposals = proposalService.findStatus(status);
+		List<ProposalData2> proposalDatas = new ArrayList<>();
+		
+		List<ProgressDTO> progesses = progressService.findAll();
+		
+		int group = userService.checkAdmin();
+		
+		log.debug("groupppppppppppppppppppppp: {}", group);
+		
+		// super admin
+		if (group == 0) {
+			for (Proposal proposal : proposals) {
+				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+				if(proposal.isStatus()){
+					proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+							currentDetaill.getProgress().getContentTask(),
+							proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+				}else{
+					proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+							currentDetaill.getProgress().getContentTask(),
+							proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+				}
+								
+			}
+			return proposalDatas;
+		}
+		
+		
+		// to truong
+		if (group != -1) {
+			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));			
+			for (Proposal proposal : proposals) {
+				for(UserExtra userExtra : userExtras) {
+					if(proposal.getUserExtra().getId().equals(userExtra.getId())) {
+						ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+						if(proposal.isStatus()){
+							proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+									currentDetaill.getProgress().getContentTask(),
+									proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+						}else{
+							proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+									currentDetaill.getProgress().getContentTask(),
+									proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+						}
+					}
+				}
+				
+			}
+			log.debug("totruong: {}", group);
+			return proposalDatas;
+		}
+		
+		// thanh vien
+		log.debug("totruong: {}", group);
+		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
+		log.debug("extra: {}", extra);
+		for (Proposal proposal : proposals) {
+				if(proposal.getUserExtra().getId().equals(extra.getId())) {
+					ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+					if(proposal.isStatus()){
+						proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+								currentDetaill.getProgress().getContentTask(),
+								proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+					}else{
+						proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+								currentDetaill.getProgress().getContentTask(),
+								proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+					}
+				}						
+		}
+		
+		return proposalDatas;
+	}
 	
 	@PutMapping("/update-All-ProgressDetail-By-ProposalId")
 	public List<ProgessDetaillDTO> updateAllProgressDetailByProposalId(@RequestBody List<ProgressStage> progressStages, @RequestParam Long proposalId){
