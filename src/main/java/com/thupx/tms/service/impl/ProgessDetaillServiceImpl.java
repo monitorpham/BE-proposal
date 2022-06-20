@@ -43,7 +43,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
      */
     @Override
     public ProgessDetaillDTO save(ProgessDetaillDTO progessDetaillDTO) {
-        log.debug("Request to save ProgessDetaill : {}", progessDetaillDTO);
+//        log.debug("Request to save ProgessDetaill : {}", progessDetaillDTO);
         ProgessDetaill progessDetaill = progessDetaillMapper.toEntity(progessDetaillDTO);
         progessDetaill = progessDetaillRepository.save(progessDetaill);
         return progessDetaillMapper.toDto(progessDetaill);
@@ -57,7 +57,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
     @Override
     @Transactional(readOnly = true)
     public List<ProgessDetaillDTO> findAll() {
-        log.debug("Request to get all ProgessDetaills");
+//        log.debug("Request to get all ProgessDetaills");
         return progessDetaillRepository.findAll().stream()
             .map(progessDetaillMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -66,7 +66,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
     @Override
     @Transactional(readOnly = true)
     public List<ProgessDetaill> findAllByProposalId(Long proposalId) {
-        log.debug("Request to get all ProgessDetaills");
+//        log.debug("Request to get all ProgessDetaills");
         return progessDetaillRepository.findAllByProposalIdOrderByIdAsc(proposalId).stream()
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -74,7 +74,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
     @Override
     @Transactional(readOnly = true)
     public List<ProgessDetaillDTO> findAllDTOByProposalId(Long proposalId) {
-        log.debug("Request to get all ProgessDetaills");
+//        log.debug("Request to get all ProgessDetaills");
         return progessDetaillRepository.findAllByProposalIdOrderByIdAsc(proposalId).stream()
         	.map(progessDetaillMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -82,7 +82,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
     
     @Override
     public int setDoneProgress(ZonedDateTime endDate, Long id) {
-        log.debug("set done progress");
+//        log.debug("set done progress");
         return progessDetaillRepository.setDoneProgress(endDate, id);
     }
 
@@ -96,7 +96,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
     @Override
     @Transactional(readOnly = true)
     public Optional<ProgessDetaillDTO> findOne(Long id) {
-        log.debug("Request to get ProgessDetaill : {}", id);
+//        log.debug("Request to get ProgessDetaill : {}", id);
         return progessDetaillRepository.findById(id)
             .map(progessDetaillMapper::toDto);
     }
@@ -108,7 +108,7 @@ public class ProgessDetaillServiceImpl implements ProgessDetaillService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete ProgessDetaill : {}", id);
+//        log.debug("Request to delete ProgessDetaill : {}", id);
 
         progessDetaillRepository.deleteById(id);
     }

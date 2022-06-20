@@ -46,7 +46,7 @@ public class ProgressResource {
      */
     @PostMapping("/progresses")
     public ResponseEntity<ProgressDTO> createProgress(@RequestBody ProgressDTO progressDTO) throws URISyntaxException {
-        log.debug("REST request to save Progress : {}", progressDTO);
+//        log.debug("REST request to save Progress : {}", progressDTO);
         if (progressDTO.getId() != null) {
             throw new BadRequestAlertException("A new progress cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -67,7 +67,7 @@ public class ProgressResource {
      */
     @PutMapping("/progresses")
     public ResponseEntity<ProgressDTO> updateProgress(@RequestBody ProgressDTO progressDTO) throws URISyntaxException {
-        log.debug("REST request to update Progress : {}", progressDTO);
+//        log.debug("REST request to update Progress : {}", progressDTO);
         if (progressDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -84,7 +84,7 @@ public class ProgressResource {
      */
     @GetMapping("/progresses")
     public List<ProgressDTO> getAllProgresses() {
-        log.debug("REST request to get all Progresses");
+//        log.debug("REST request to get all Progresses");
         return progressService.findAll();
     }
 
@@ -96,7 +96,7 @@ public class ProgressResource {
      */
     @GetMapping("/progresses/{id}")
     public ResponseEntity<ProgressDTO> getProgress(@PathVariable Long id) {
-        log.debug("REST request to get Progress : {}", id);
+//        log.debug("REST request to get Progress : {}", id);
         Optional<ProgressDTO> progressDTO = progressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(progressDTO);
     }
@@ -110,7 +110,7 @@ public class ProgressResource {
      */
     @DeleteMapping("/progresses/{id}")
     public ResponseEntity<Void> deleteProgress(@PathVariable Long id) {
-        log.debug("REST request to delete Progress : {}", id);
+//        log.debug("REST request to delete Progress : {}", id);
 
         progressService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();

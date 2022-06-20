@@ -47,7 +47,7 @@ public class ProgessDetaillResource {
      */
     @PostMapping("/progess-detaills")
     public ResponseEntity<ProgessDetaillDTO> createProgessDetaill(@RequestBody ProgessDetaillDTO progessDetaillDTO) throws URISyntaxException {
-        log.debug("REST request to save ProgessDetaill : {}", progessDetaillDTO);
+//        log.debug("REST request to save ProgessDetaill : {}", progessDetaillDTO);
         if (progessDetaillDTO.getId() != null) {
             throw new BadRequestAlertException("A new progessDetaill cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -68,7 +68,7 @@ public class ProgessDetaillResource {
      */
     @PutMapping("/progess-detaills")
     public ResponseEntity<ProgessDetaillDTO> updateProgessDetaill(@RequestBody ProgessDetaillDTO progessDetaillDTO) throws URISyntaxException {
-        log.debug("REST request to update ProgessDetaill : {}", progessDetaillDTO);
+//        log.debug("REST request to update ProgessDetaill : {}", progessDetaillDTO);
         if (progessDetaillDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -91,7 +91,7 @@ public class ProgessDetaillResource {
      */
     @GetMapping("/progess-detaills")
     public List<ProgessDetaillDTO> getAllProgessDetaills() {
-        log.debug("REST request to get all ProgessDetaills");
+//        log.debug("REST request to get all ProgessDetaills");
         return progessDetaillService.findAll();
     }
 
@@ -103,7 +103,7 @@ public class ProgessDetaillResource {
      */
     @GetMapping("/progess-detaills/{id}")
     public ResponseEntity<ProgessDetaillDTO> getProgessDetaill(@PathVariable Long id) {
-        log.debug("REST request to get ProgessDetaill : {}", id);
+//        log.debug("REST request to get ProgessDetaill : {}", id);
         Optional<ProgessDetaillDTO> progessDetaillDTO = progessDetaillService.findOne(id);
         return ResponseUtil.wrapOrNotFound(progessDetaillDTO);
     }
@@ -116,7 +116,7 @@ public class ProgessDetaillResource {
      */
     @DeleteMapping("/progess-detaills/{id}")
     public ResponseEntity<Void> deleteProgessDetaill(@PathVariable Long id) {
-        log.debug("REST request to delete ProgessDetaill : {}", id);
+//        log.debug("REST request to delete ProgessDetaill : {}", id);
 
         progessDetaillService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();

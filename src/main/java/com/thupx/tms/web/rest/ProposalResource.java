@@ -23,12 +23,14 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -167,12 +169,12 @@ public class ProposalResource {
 	
 	@GetMapping("/proposals")
 	public List<Proposal> getAllProposals() {
-		log.debug("REST request to get all Proposals");
+//		log.debug("REST request to get all Proposals");
 		return proposalService.findAll();
 	}
 
 	public ProgessDetaill getCurrentProgessDetaill(Long idProposal) {
-		log.debug("REST request to get ProgessDetaill : {}", idProposal);
+//		log.debug("REST request to get ProgessDetaill : {}", idProposal);
 		List<ProgessDetaill> progessDetaills = progessDetaillService.findAllByProposalId(idProposal);
 
 		
@@ -188,7 +190,7 @@ public class ProposalResource {
 //		}
 		
 		for (int i=progessDetaills.size() -1 ; i>0; i--  ) {
-			log.debug("issueeeeeeeeeeeeeeeeeeeeee", progessDetaills.get(i).getEndDate());
+//			log.debug("issueeeeeeeeeeeeeeeeeeeeee", progessDetaills.get(i).getEndDate());
 			if (progessDetaills.get(i).getEndDate() != null) {
 				return progessDetaills.get(i);
 				
@@ -199,7 +201,7 @@ public class ProposalResource {
 	}
 
 	public ProgessDetaillDTO getCurrentProgessDetaillDTO(Long idProposal) {
-		log.debug("REST request to get current ProgessDetaillDTO : {}", idProposal);
+//		log.debug("REST request to get current ProgessDetaillDTO : {}", idProposal);
 		List<ProgessDetaillDTO> progessDetaills = progessDetaillService.findAllDTOByProposalId(idProposal);
 
 		for (ProgessDetaillDTO progessDetaill : progessDetaills) {			
@@ -213,7 +215,7 @@ public class ProposalResource {
 
 	@GetMapping("/proposals-data-table")
 	public List<ProposalData2> getAllProposalsDataTable() {
-		log.debug("REST request to get all Proposals-table");
+//		log.debug("REST request to get all Proposals-table");
 		
 		long countDays = 0;
 		
@@ -273,7 +275,7 @@ public class ProposalResource {
 				}
 				
 			}
-			log.debug("totruong: {}", group);
+//			log.debug("totruong: {}", group);
 			return proposalDatas;
 		}
 		
@@ -301,7 +303,7 @@ public class ProposalResource {
 
 	@GetMapping("/get-All-ProgressDetail-By-ProposalId")
 	public List<ProgressStage> getAllProgressDetailByProposalId(@RequestParam Long id) {
-		log.debug("REST request to get-All-ProgressDetail-By-ProposalId");
+//		log.debug("REST request to get-All-ProgressDetail-By-ProposalId");
 		List<ProgessDetaill> progessDetaills = progessDetaillService.findAllByProposalId(id);
 		
 		List<ProgressStage> progressStages = new ArrayList<>();
@@ -326,7 +328,7 @@ public class ProposalResource {
 	
 	@GetMapping("/get-All-Data-By-Status/{status}")
 	public List<ProposalData2> getAllDataByStatus(@RequestParam Boolean status) {
-		log.debug("REST request to get-All-Data-By-Status");
+//		log.debug("REST request to get-All-Data-By-Status");
 		long countDays = 0;
 		
 		List<ProgressDTO> progressDTOs = progressService.findAll(); 
@@ -335,8 +337,6 @@ public class ProposalResource {
 			countDays = countDays + progressDTO.getLimit();
 		}
 		
-		
-		
 		List<Proposal> proposals = proposalService.findStatus(status);
 		List<ProposalData2> proposalDatas = new ArrayList<>();
 		
@@ -344,7 +344,7 @@ public class ProposalResource {
 		
 		int group = userService.checkAdmin();
 		
-		log.debug("groupppppppppppppppppppppp: {}", group);
+//		log.debug("groupppppppppppppppppppppp: {}", group);
 		
 		// super admin
 		if (group == 0) {
@@ -385,7 +385,7 @@ public class ProposalResource {
 				}
 				
 			}
-			log.debug("totruong: {}", group);
+//			log.debug("totruong: {}", group);
 			return proposalDatas;
 		}
 		
@@ -413,7 +413,7 @@ public class ProposalResource {
 	
 	@PutMapping("/update-All-ProgressDetail-By-ProposalId")
 	public List<ProgessDetaillDTO> updateAllProgressDetailByProposalId(@RequestBody List<ProgressStage> progressStages, @RequestParam Long proposalId){
-		log.debug("REST request to update-All-ProgressDetail-By-ProposalId");
+//		log.debug("REST request to update-All-ProgressDetail-By-ProposalId");
 		
 		List<ProgessDetaillDTO> detaillDTOs = new ArrayList<>();
 		
@@ -481,9 +481,21 @@ public class ProposalResource {
 	 */
 	@GetMapping("/proposals/{id}")
 	public ResponseEntity<ProposalDTO> getProposal(@PathVariable Long id) {
-		log.debug("REST request to get Proposal : {}", id);
+//		log.debug("REST request to get Proposal : {}", id);
 		Optional<ProposalDTO> proposalDTO = proposalService.findOne(id);
 		return ResponseUtil.wrapOrNotFound(proposalDTO);
+	}
+	
+	@GetMapping("/proposals/{status}&{one_date}/{two_date}")
+	public List<Proposal> getProposalStatusBetween(@RequestParam Boolean status,@PathVariable(value = "one_date")  ZonedDateTime fromDate, @PathVariable(value = "two_date") ZonedDateTime toDate) {
+		//log.debug("REST request to get Proposal : {}", id);
+		//List<Proposal> proposalData = proposalService.findStatusDate(status, one_date, two_date);
+//		for (Proposal proposal : proposalData) {
+//			if(proposal.getEndDate()==null) {
+//				
+//			}
+//		}
+		return proposalService.findStatusDate(status, fromDate, toDate);
 	}
 
 	/**
@@ -494,7 +506,7 @@ public class ProposalResource {
 	 */
 	@DeleteMapping("/proposals/{id}")
 	public ResponseEntity<Void> deleteProposal(@PathVariable Long id) {
-		log.debug("REST request to delete Proposal : {}", id);
+//		log.debug("REST request to delete Proposal : {}", id);
 		
 		List<ProgessDetaill> progessDetaills = progessDetaillService.findAllByProposalId(id);
 		

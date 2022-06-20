@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class ProposalServiceImpl implements ProposalService {
      */
     @Override
     public ProposalDTO save(ProposalDTO proposalDTO) {
-        log.debug("Request to save Proposal : {}", proposalDTO);
+//        log.debug("Request to save Proposal : {}", proposalDTO);
         Proposal proposal = proposalMapper.toEntity(proposalDTO);
         proposal = proposalRepository.save(proposal);
         return proposalMapper.toDto(proposal);
@@ -56,7 +57,7 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     @Transactional(readOnly = true)
     public List<ProposalDTO> findAllDTO() {
-        log.debug("Request to get all ProposalsDTO");
+//        log.debug("Request to get all ProposalsDTO");
         return proposalRepository.findAll().stream()
             .map(proposalMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -65,7 +66,7 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     @Transactional(readOnly = true)
     public List<Proposal> findAll() {
-        log.debug("Request to get all Proposals");
+//        log.debug("Request to get all Proposals");
         return proposalRepository.findAll().stream()
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -80,7 +81,7 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     @Transactional(readOnly = true)
     public Optional<ProposalDTO> findOne(Long id) {
-        log.debug("Request to get Proposal : {}", id);
+//        log.debug("Request to get Proposal : {}", id);
         return proposalRepository.findById(id)
             .map(proposalMapper::toDto);
     }
@@ -92,7 +93,7 @@ public class ProposalServiceImpl implements ProposalService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Proposal : {}", id);
+//        log.debug("Request to delete Proposal : {}", id);
 
         proposalRepository.deleteById(id);
     }
@@ -100,8 +101,15 @@ public class ProposalServiceImpl implements ProposalService {
 	@Override
 	public List<Proposal> findStatus(Boolean status) {
 		// TODO Auto-generated method stub
-		log.debug("Request to get all Proposals status");
+//		log.debug("Request to get all Proposals status");
 		return proposalRepository.findByStatus(status).stream()
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<Proposal> findStatusDate(Boolean status, ZonedDateTime one_date, ZonedDateTime two_date) {
+		// TODO Auto-generated method stub
+		return proposalRepository.findByStatusDateBetween(status,one_date,two_date).stream()
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
 

@@ -3,6 +3,7 @@ package com.thupx.tms.service;
 import com.thupx.tms.domain.Proposal;
 import com.thupx.tms.service.dto.ProposalDTO;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,8 @@ public interface ProposalService {
     List<Proposal> findAll();
     
     List<Proposal> findStatus(Boolean status);
+    
+    List<Proposal> findStatusDate(Boolean status,ZonedDateTime one_date,ZonedDateTime two_date);
     /**
      * Get the "id" proposal.
      *

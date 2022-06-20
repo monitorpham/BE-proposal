@@ -42,7 +42,7 @@ public class ProgressServiceImpl implements ProgressService {
      */
     @Override
     public ProgressDTO save(ProgressDTO progressDTO) {
-        log.debug("Request to save Progress : {}", progressDTO);
+//        log.debug("Request to save Progress : {}", progressDTO);
         Progress progress = progressMapper.toEntity(progressDTO);
         progress = progressRepository.save(progress);
         return progressMapper.toDto(progress);
@@ -56,7 +56,7 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     @Transactional(readOnly = true)
     public List<ProgressDTO> findAll() {
-        log.debug("Request to get all Progresses");
+//        log.debug("Request to get all Progresses");
         return progressRepository.findAll().stream()
             .map(progressMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -72,7 +72,7 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     @Transactional(readOnly = true)
     public Optional<ProgressDTO> findOne(Long id) {
-        log.debug("Request to get Progress : {}", id);
+//        log.debug("Request to get Progress : {}", id);
         return progressRepository.findById(id)
             .map(progressMapper::toDto);
     }
@@ -86,7 +86,7 @@ public class ProgressServiceImpl implements ProgressService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Progress : {}", id);
+//        log.debug("Request to delete Progress : {}", id);
 
         progressRepository.deleteById(id);
     }
