@@ -7,6 +7,7 @@ import com.thupx.tms.domain.Proposal;
 import com.thupx.tms.domain.ProposalData;
 import com.thupx.tms.domain.ProposalData2;
 import com.thupx.tms.domain.UserExtra;
+import com.thupx.tms.repository.ProposalRepository;
 import com.thupx.tms.repository.UserExtraRepository;
 import com.thupx.tms.service.ProgressService;
 import com.thupx.tms.service.ProposalService;
@@ -18,11 +19,19 @@ import com.thupx.tms.service.dto.ProgressDTO;
 import com.thupx.tms.service.dto.ProposalDTO;
 import com.thupx.tms.service.dto.UserExtraDTO;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +69,9 @@ public class ProposalResource {
 	private final UserService userService;
 
 	private final UserExtraRepository extraRepository;
+	
+	@Autowired
+	ProposalRepository proposalRepository;
 
 	public ProposalResource(ProposalService proposalService, ProgressService progressService,
 			ProgessDetaillService progessDetaillService, UserService userService, UserExtraRepository extraRepository) {
@@ -208,9 +220,15 @@ public class ProposalResource {
 	}
 
 	@GetMapping("/proposals-data-table")
-	public List<ProposalData2> getAllProposalsDataTable() {
+	public ResponseEntity<Page<ProposalData2>> getAllProposalsDataTable(@RequestParam int pageNum , @RequestParam int pageSize,
+			@RequestParam(defaultValue = "") String sortBy,
+			Sort.Direction direction
+//			@RequestParam(defaultValue = "ASC") String sortDir
+//			@RequestParam(required = false) String title
+			){
 //		log.debug("REST request to get all Proposals-table");
-
+//		Pageable pageable = PageRequest.of(pageNum, pageSize,Sort.by("id").ascending());
+		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(direction,sortBy));
 		long countDays = 0;
 
 		List<ProgressDTO> progressDTOs = progressService.findAll();
@@ -219,7 +237,8 @@ public class ProposalResource {
 			countDays = countDays + progressDTO.getLimit();
 		}
 
-		List<Proposal> proposals = proposalService.findAll();
+		Page<Proposal> proposals = proposalRepository.findAll(pageable);
+		
 		List<ProposalData2> proposalDatas = new ArrayList<>();
 
 //		List<ProgressDTO> progesses = progressService.findAll();
@@ -245,7 +264,9 @@ public class ProposalResource {
 				}
 
 			}
-			return proposalDatas;
+//			return proposalDatas;
+			Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.getTotalElements());
+		    return ResponseEntity.ok(holder);
 		}
 
 		// to truong
@@ -271,7 +292,9 @@ public class ProposalResource {
 
 			}
 //			log.debug("totruong: {}", group);
-			return proposalDatas;
+//			return proposalDatas;
+			Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.getTotalElements());
+		    return ResponseEntity.ok(holder);
 		}
 
 		// thanh vien
@@ -295,8 +318,116 @@ public class ProposalResource {
 			}
 		}
 
+//		return proposalDatas;
+		Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.getTotalElements());
+	    return ResponseEntity.ok(holder);
+	}
+	
+	
+	@GetMapping("/proposals-data-table-all")
+	public List<ProposalData2> getAllProposalsDataTableAll() {
+//		log.debug("REST request to get all Proposals-table");
+		
+		long countDays = 0;
+		
+		List<ProgressDTO> progressDTOs = progressService.findAll(); 
+		
+		for (ProgressDTO progressDTO : progressDTOs) {
+			countDays = countDays + progressDTO.getLimit();
+		}
+		
+		
+		
+		List<Proposal> proposals = proposalService.findAll();
+//		final Page<Proposal> proposals3 = proposalService.findAllPage(pageable);
+//		 final Page<Proposal> proposals = new PageImpl<>(proposals3, pageable,proposals3.size());
+//		 final Page<Proposal> proposals = new PageImpl<>(proposals1, pageable,proposals1.size());
+//	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+//	        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+		List<ProposalData2> proposalDatas = new ArrayList<>();
+		
+//		List<ProgressDTO> progesses = progressService.findAll();
+		
+		int group = userService.checkAdmin();
+		
+//		log.debug("groupppppppppppppppppppppp: {}", group);
+		
+		// super admin
+		if (group == 0) {
+			for (Proposal proposal : proposals) {
+				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+				if(proposal.isStatus()){
+					proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+							currentDetaill.getProgress().getContentTask(),
+							proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+				}else{
+					proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+							currentDetaill.getProgress().getContentTask(),
+							proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+				}
+								
+			}
+
+//			 final Page<ProposalData2> page = new PageImpl<ProposalData2>(proposalDatas, pageable,proposalDatas.size());
+//			 log.debug("pageeee: {}", page);
+//			 HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+//		     return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+		        
+			return proposalDatas;
+		}
+		
+		
+		// to truong
+		if (group != -1) {
+			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));			
+			for (Proposal proposal : proposals) {
+				for(UserExtra userExtra : userExtras) {
+					if(proposal.getUserExtra().getId().equals(userExtra.getId())) {
+						ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+						if(proposal.isStatus()){
+							proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+									currentDetaill.getProgress().getContentTask(),
+									proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+						}else{
+							proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+									currentDetaill.getProgress().getContentTask(),
+									proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+						}
+					}
+				}
+				
+			}
+//			log.debug("totruong: {}", group);
+			return proposalDatas;
+//			 final Page<ProposalData2> page = new PageImpl<ProposalData2>(proposalDatas, pageable,proposalDatas.size());
+//		        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+//		        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+		       
+		}
+		
+		// thanh vien
+//		log.debug("totruong: {}", group);
+		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
+//		log.debug("extra: {}", extra);
+		for (Proposal proposal : proposals) {
+				if(proposal.getUserExtra().getId().equals(extra.getId())) {
+					ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+					if(proposal.isStatus()){
+						proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+								currentDetaill.getProgress().getContentTask(),
+								proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
+					}else{
+						proposalDatas.add(new ProposalData2(proposal,currentDetaill.getId(),
+								currentDetaill.getProgress().getContentTask(),
+								proposal.getStartDate().plusDays(countDays+proposal.getAdditionalDate()),calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
+					}
+				}						
+		}
+		
 		return proposalDatas;
 	}
+	
+	
 
 	@GetMapping("/proposals-data-table-alert/{number}")
 	public List<ProposalData2> getAllProposalsDataTableAlert(@PathVariable Long number) {

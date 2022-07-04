@@ -4,6 +4,9 @@ import com.thupx.tms.domain.Proposal;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +22,5 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 	
 	List<Proposal> findByStatusDateBetween(@Param("status") Boolean status, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
 	
+	Page<Proposal> findAll(Pageable pageable);
 }
