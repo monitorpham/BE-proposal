@@ -272,7 +272,7 @@ public class ProposalResource {
 
 		// to truong
 		if (group != -1) {
-			Page<Proposal> proposals = proposalRepository.findAll(pageable);
+			List<Proposal> proposals = proposalRepository.findAll();
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
 			for (Proposal proposal : proposals) {
 				for (UserExtra userExtra : userExtras) {
@@ -295,7 +295,7 @@ public class ProposalResource {
 			}
 //			log.debug("totruong: {}", group);
 //			return proposalDatas;
-			Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.getTotalElements());
+			Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.size());
 		    return ResponseEntity.ok(holder);
 		}
 
@@ -303,7 +303,7 @@ public class ProposalResource {
 //		log.debug("totruong: {}", group);
 		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
 //		log.debug("extra: {}", extra);
-		Page<Proposal> proposals = proposalRepository.findAll(pageable);
+		List<Proposal> proposals = proposalRepository.findAll();
 		for (Proposal proposal : proposals) {
 			if (proposal.getUserExtra().getId().equals(extra.getId())) {
 				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
@@ -322,7 +322,7 @@ public class ProposalResource {
 		}
 
 //		return proposalDatas;
-		Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.getTotalElements());
+		Page<ProposalData2> holder = new PageImpl<>(proposalDatas,pageable,proposals.size());
 	    return ResponseEntity.ok(holder);
 	}
 	
