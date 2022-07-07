@@ -237,8 +237,7 @@ public class ProposalResource {
 			countDays = countDays + progressDTO.getLimit();
 		}
 
-//		Page<Proposal> proposals = proposalRepository.findAll(pageable);
-		List<Proposal> proposalss = proposalRepository.findAll();
+		Page<Proposal> proposals = proposalRepository.findAll(pageable);
 		
 		List<ProposalData2> proposalDatas = new ArrayList<>();
 
@@ -250,8 +249,7 @@ public class ProposalResource {
 
 		// super admin
 		if (group == 0) {
-			
-			Page<Proposal> proposals = new PageImpl<>(proposalss, pageable, proposalss.size());
+//			Page<Proposal> proposals = proposalRepository.findAll(pageable);
 			for (Proposal proposal : proposals) {
 				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
 				if (proposal.isStatus()) {
@@ -275,7 +273,6 @@ public class ProposalResource {
 		// to truong
 		if (group != -1) {
 //			List<Proposal> proposals = proposalRepository.findAll();
-			Page<Proposal> proposals = new PageImpl<>(proposalss, pageable, proposalss.size());
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
 			for (Proposal proposal : proposals) {
 				for (UserExtra userExtra : userExtras) {
@@ -307,7 +304,6 @@ public class ProposalResource {
 		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
 //		log.debug("extra: {}", extra);
 //		List<Proposal> proposals = proposalRepository.findAll();
-		Page<Proposal> proposals = new PageImpl<>(proposalss, pageable, proposalss.size());
 		for (Proposal proposal : proposals) {
 			if (proposal.getUserExtra().getId().equals(extra.getId())) {
 				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
