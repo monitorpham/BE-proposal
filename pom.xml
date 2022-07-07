@@ -6,7 +6,7 @@
     <groupId>com.thupx.tms</groupId>
     <artifactId>task-management-software-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Task Management Software Server</name>
 
     <repositories>
@@ -398,6 +398,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-surefire-plugin</artifactId>
+            	<configuration>
+            		<skip>true</skip>
+            	</configuration>
             </plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
@@ -877,6 +884,7 @@
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>
+                    <scope>provided</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>

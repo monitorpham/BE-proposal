@@ -18,9 +18,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 	List<Proposal> findByStatus(Boolean status);
-	@Query(value = "SELECT * FROM PROPOSAL WHERE STATUS = :status and COALESCE(END_DATE,START_DATE) >= :startDate AND COALESCE(END_DATE,START_DATE) <= :endDate", nativeQuery = true) 
 	
+	@Query(value = "SELECT * FROM PROPOSAL WHERE STATUS = :status and COALESCE(END_DATE,START_DATE) >= :startDate AND COALESCE(END_DATE,START_DATE) <= :endDate", nativeQuery = true) 	
 	List<Proposal> findByStatusDateBetween(@Param("status") Boolean status, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
+	
 	
 	Page<Proposal> findAll(Pageable pageable);
 }
