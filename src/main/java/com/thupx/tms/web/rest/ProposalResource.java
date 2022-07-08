@@ -113,8 +113,8 @@ public class ProposalResource {
 //			ResponseUtil.wrapOrNotFound();
 //		}
 
-		Optional<UserExtra> userExtra = extraRepository.findById(proposalDTO.getUserExtraId());
-		if (userExtra.isEmpty()) {
+		Optional<UserExtra> userExtraa = extraRepository.findById(proposalDTO.getUserExtraId());
+		if (userExtraa.isEmpty()) {
 			return new ResponseEntity<>("User ID not found", HttpStatus.BAD_REQUEST);
 		}
 
@@ -122,6 +122,7 @@ public class ProposalResource {
 
 		// proposalDTO.setStartDate(time);
 		proposalDTO.setStatus(false);
+		proposalDTO.setRemainingDate(calRemainingDate(ZonedDateTime.now(), proposalDTO.getStartDate(), ChronoUnit.DAYS));
 
 		// proposalDTO.setUserExtraId(userService.getUserid());
 
@@ -133,6 +134,8 @@ public class ProposalResource {
 			ProgessDetaillDTO progessDetaillDTO = new ProgessDetaillDTO(result.getId(), progressDTO.getId());
 			progessDetaillService.save(progessDetaillDTO);
 		}
+	
+		
 
 		return ResponseEntity
 				.created(new URI("/api/proposals/" + result.getId())).headers(HeaderUtil
@@ -252,7 +255,9 @@ public class ProposalResource {
 //			Page<Proposal> proposals = proposalRepository.findAll(pageable);
 			for (Proposal proposal : proposals) {
 				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
+				log.debug("proposallllllllllllllllll: {}", proposal.isStatus());
 				if (proposal.isStatus()) {
+					
 					proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
 							currentDetaill.getProgress().getContentTask(),
 							proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
@@ -799,6 +804,7 @@ public class ProposalResource {
 			ProposalDTO proposalDTO = proposalService.findOne(proposalId).get();
 //			proposalDTO.setEndDate(progressStages.get(progressStages.size() - 1).getTimeEnd());
 			proposalDTO.setStatus(true);
+			proposalDTO.setRemainingDate(calRemainingDate(proposalDTO.getEndDate(), proposalDTO.getStartDate(), ChronoUnit.DAYS));
 			proposalService.save(proposalDTO);
 		}
 
