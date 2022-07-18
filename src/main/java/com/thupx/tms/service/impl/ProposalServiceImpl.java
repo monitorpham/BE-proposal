@@ -107,9 +107,9 @@ public class ProposalServiceImpl implements ProposalService {
 	}
 
 	@Override
-	public List<Proposal> findStatusDate(Boolean status, ZonedDateTime one_date, ZonedDateTime two_date) {
+	public List<Proposal> findStatusDate(Boolean statusChart, ZonedDateTime one_date, ZonedDateTime two_date) {
 		// TODO Auto-generated method stub
-		return proposalRepository.findByStatusDateBetween(status,one_date,two_date).stream()
+		return proposalRepository.findByStatusDateBetween(statusChart,one_date,two_date).stream()
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
 

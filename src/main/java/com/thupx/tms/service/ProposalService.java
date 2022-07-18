@@ -31,7 +31,7 @@ public interface ProposalService {
     
     List<Proposal> findStatus(Boolean status);
     
-    List<Proposal> findStatusDate(Boolean status,ZonedDateTime one_date,ZonedDateTime two_date);
+    List<Proposal> findStatusDate(Boolean statusChart,ZonedDateTime one_date,ZonedDateTime two_date);
     /**
      * Get the "id" proposal.
      *

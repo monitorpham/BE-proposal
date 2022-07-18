@@ -41,6 +41,15 @@ public class Proposal implements Serializable {
     @Column(name = "additional_date")
     private Integer additionalDate;
 
+    @Column(name = "status_chart")
+    private Boolean statusChart;
+
+    @Column(name = "current_progress_id")
+    private Integer currentProgressId;
+
+    @Column(name = "current_progress_name")
+    private String currentProgressName;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "proposals", allowSetters = true)
     private HospitalDepartment hospitalDepartment;
@@ -149,6 +158,45 @@ public class Proposal implements Serializable {
         this.additionalDate = additionalDate;
     }
 
+    public Boolean isStatusChart() {
+        return statusChart;
+    }
+
+    public Proposal statusChart(Boolean statusChart) {
+        this.statusChart = statusChart;
+        return this;
+    }
+
+    public void setStatusChart(Boolean statusChart) {
+        this.statusChart = statusChart;
+    }
+
+    public Integer getCurrentProgressId() {
+        return currentProgressId;
+    }
+
+    public Proposal currentProgressId(Integer currentProgressId) {
+        this.currentProgressId = currentProgressId;
+        return this;
+    }
+
+    public void setCurrentProgressId(Integer currentProgressId) {
+        this.currentProgressId = currentProgressId;
+    }
+
+    public String getCurrentProgressName() {
+        return currentProgressName;
+    }
+
+    public Proposal currentProgressName(String currentProgressName) {
+        this.currentProgressName = currentProgressName;
+        return this;
+    }
+
+    public void setCurrentProgressName(String currentProgressName) {
+        this.currentProgressName = currentProgressName;
+    }
+
     public HospitalDepartment getHospitalDepartment() {
         return hospitalDepartment;
     }
@@ -204,6 +252,9 @@ public class Proposal implements Serializable {
             ", note='" + getNote() + "'" +
             ", remainingDate=" + getRemainingDate() +
             ", additionalDate=" + getAdditionalDate() +
+            ", statusChart='" + isStatusChart() + "'" +
+            ", currentProgressId=" + getCurrentProgressId() +
+            ", currentProgressName='" + getCurrentProgressName() + "'" +
             "}";
     }
 }

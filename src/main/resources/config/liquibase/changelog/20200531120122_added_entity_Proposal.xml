@@ -15,7 +15,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="content_proposal" type="varchar(5000)">
+            <column name="content_proposal" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="start_date" type="datetime">
@@ -27,7 +27,7 @@
             <column name="status" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="note" type="varchar(5000)">
+            <column name="note" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="remaining_date" type="integer">
@@ -36,10 +36,19 @@
             <column name="additional_date" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="status_chart" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="current_progress_id" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="current_progress_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="hospital_department_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="user_extra_user_id" type="bigint">
+            <column name="user_extra_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -74,6 +83,9 @@
             <column name="note" type="string"/>
             <column name="remaining_date" type="numeric"/>
             <column name="additional_date" type="numeric"/>
+            <column name="status_chart" type="boolean"/>
+            <column name="current_progress_id" type="numeric"/>
+            <column name="current_progress_name" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

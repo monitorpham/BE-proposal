@@ -24,6 +24,12 @@ public class ProposalDTO implements Serializable {
 
     private Integer additionalDate;
 
+    private Boolean statusChart;
+
+    private Integer currentProgressId;
+
+    private String currentProgressName;
+
 
     private Long hospitalDepartmentId;
 
@@ -93,6 +99,30 @@ public class ProposalDTO implements Serializable {
         this.additionalDate = additionalDate;
     }
 
+    public Boolean isStatusChart() {
+        return statusChart;
+    }
+
+    public void setStatusChart(Boolean statusChart) {
+        this.statusChart = statusChart;
+    }
+
+    public Integer getCurrentProgressId() {
+        return currentProgressId;
+    }
+
+    public void setCurrentProgressId(Integer currentProgressId) {
+        this.currentProgressId = currentProgressId;
+    }
+
+    public String getCurrentProgressName() {
+        return currentProgressName;
+    }
+
+    public void setCurrentProgressName(String currentProgressName) {
+        this.currentProgressName = currentProgressName;
+    }
+
     public Long getHospitalDepartmentId() {
         return hospitalDepartmentId;
     }
@@ -138,6 +168,9 @@ public class ProposalDTO implements Serializable {
             ", note='" + getNote() + "'" +
             ", remainingDate=" + getRemainingDate() +
             ", additionalDate=" + getAdditionalDate() +
+            ", statusChart='" + isStatusChart() + "'" +
+            ", currentProgressId=" + getCurrentProgressId() +
+            ", currentProgressName='" + getCurrentProgressName() + "'" +
             ", hospitalDepartmentId=" + getHospitalDepartmentId() +
             ", userExtraId=" + getUserExtraId() +
             "}";
