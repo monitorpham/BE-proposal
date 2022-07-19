@@ -21,7 +21,9 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 	
 	@Query(value = "SELECT * FROM PROPOSAL WHERE STATUS_CHART = :statusChart and COALESCE(END_DATE,START_DATE) >= :startDate AND COALESCE(END_DATE,START_DATE) <= :endDate", nativeQuery = true) 	
 	List<Proposal> findByStatusDateBetween(@Param("statusChart") Boolean statusChart, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
-	 
+	
+	@Query(value = "SELECT * FROM PROPOSAL order by id ", nativeQuery = true) 	
+	List<Proposal> findAllOrderById();
 	
 	@Query(value = "SELECT * FROM PROPOSAL as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
@@ -37,7 +39,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.note) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
-			+ " (CASE WHEN isnumeric(TRIM(:search)) = true THEN p.id = CAST(TRIM(:search) AS INT) END) or"
+			+ " (CASE WHEN TRIM(:search) ~ '^[0-9]+$' THEN p.id = CAST(TRIM(:search) AS INT) END) or"
 			+ " UPPER(u.first_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(u.last_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
@@ -47,7 +49,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.note) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
-			+ " (CASE WHEN isnumeric(TRIM(:search)) = true THEN p.id = CAST(TRIM(:search) AS INT) END) or"
+			+ " (CASE WHEN  TRIM(:search) ~ '^[0-9]+$' THEN p.id = CAST(TRIM(:search) AS INT) END) or"
 			+ " UPPER(u.first_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(u.last_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
@@ -57,7 +59,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.note) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
-			+ " (CASE WHEN isnumeric(TRIM(:search)) = true THEN p.id = CAST(TRIM(:search) AS INT) END) or"
+			+ " (CASE WHEN TRIM(:search) ~ '^[0-9]+$' THEN p.id = CAST(TRIM(:search) AS INT) END) or"
 			+ " UPPER(u.first_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(u.last_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)

@@ -380,7 +380,7 @@ public class ProposalResource {
         String headerValue = "attachment; filename=proposals_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Proposal> listProposals = proposalService.findAll();
+        List<Proposal> listProposals = proposalRepository.findAllOrderById();
 //        log.debug("LISTTTTTTTTTTTTTTTTTTT: {}", listProposals);
          
         ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
