@@ -380,11 +380,36 @@ public class ProposalResource {
         String headerValue = "attachment; filename=proposals_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Proposal> listProposals = proposalRepository.findAllOrderById();
-//        log.debug("LISTTTTTTTTTTTTTTTTTTT: {}", listProposals);
-         
-        ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
-         
+//        List<Proposal> listProposals = proposalRepository.findAllOrderById();
+//        ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
+        
+        int group = userService.checkAdmin();
+
+		// super admin
+		if (group == 0) {
+			List<Proposal> listProposals = proposalRepository.findAllOrderById();
+			ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
+			excelExporter.export(response);    
+		}
+
+		// to truong
+		if (group != -1) {
+			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
+
+			for (UserExtra userExtra : userExtras) {
+//				Page<Proposal> proposals = proposalRepository.findByUserExtraUserId(pageable, userExtra.getId(),search);
+				List<Proposal> listProposals = proposalRepository.findAllByIdOrderById(userExtra.getId());
+				ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
+				excelExporter.export(response);    
+			}
+		}
+
+		
+		// thanh vien
+//		log.debug("totruong: {}", group);
+		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
+		List<Proposal> listProposals = proposalRepository.findAllByIdOrderById(extra.getId());
+		ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);		
         excelExporter.export(response);    
     }  
 	

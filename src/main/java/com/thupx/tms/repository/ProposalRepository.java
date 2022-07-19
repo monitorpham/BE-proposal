@@ -25,6 +25,9 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 	@Query(value = "SELECT * FROM PROPOSAL order by id ", nativeQuery = true) 	
 	List<Proposal> findAllOrderById();
 	
+	@Query(value = "SELECT * FROM PROPOSAL where user_extra_user_id =:user_extra_user_id order by id ", nativeQuery = true) 	
+	List<Proposal> findAllByIdOrderById(@Param("user_extra_user_id") Long user_extra_user_id);
+	
 	@Query(value = "SELECT * FROM PROPOSAL as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
