@@ -22,7 +22,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 	@Query(value = "SELECT * FROM PROPOSAL WHERE STATUS_CHART = :statusChart and COALESCE(END_DATE,START_DATE) >= :startDate AND COALESCE(END_DATE,START_DATE) <= :endDate", nativeQuery = true) 	
 	List<Proposal> findByStatusDateBetween(@Param("statusChart") Boolean statusChart, @Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
 	 
-	
+	@Modifying  
 	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
@@ -33,6 +33,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
 	Page<Proposal> findAll(Pageable pageable,@Param("search") String search);
 	
+	@Modifying 
 	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and p.user_extra_user_id=:user_extra_user_id and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
@@ -43,6 +44,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
 	Page<Proposal> findByUserExtraUserId(Pageable pageable,@Param("user_extra_user_id") Long user_extra_user_id, @Param("search") String search);
 	
+	@Modifying  
 	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and p.status=:status and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
@@ -53,6 +55,7 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
 	Page<Proposal> findStatus(Pageable pageable, @Param("search") String search,@Param("status") Boolean status);
 	
+	@Modifying  
 	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and p.user_extra_user_id=:user_extra_user_id and p.status=:status and"
 			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
 			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
