@@ -347,7 +347,7 @@ public class ProposalResource {
 
 		// super admin
 		if (group == 0) {
-			Page<Proposal> proposals = proposalRepository.findAllProposal(pageable,search);
+			Page<Proposal> proposals = proposalRepository.findAll(pageable,search);
 			return ResponseEntity.ok(proposals);
 		}
 
