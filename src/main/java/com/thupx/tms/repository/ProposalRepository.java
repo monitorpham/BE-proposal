@@ -43,4 +43,24 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
 	Page<Proposal> findByUserExtraUserId(Pageable pageable,@Param("user_extra_user_id") Long user_extra_user_id, @Param("search") String search);
 	
+	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and p.status=:status and"
+			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(p.note) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " (CASE WHEN isnumeric(TRIM(:search)) = true THEN p.id = CAST(TRIM(:search) AS INT) END) or"
+			+ " UPPER(u.first_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(u.last_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
+	Page<Proposal> findStatus(Pageable pageable, @Param("search") String search,@Param("status") Boolean status);
+	
+	@Query(value = "SELECT * FROM proposal as p, jhi_user as u, hospital_department as h WHERE p.user_extra_user_id = u.id and p.hospital_department_id = h.id and p.user_extra_user_id=:user_extra_user_id and p.status=:status and"
+			+ " (UPPER(p.content_proposal) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(p.current_progress_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(p.note) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " (CASE WHEN isnumeric(TRIM(:search)) = true THEN p.id = CAST(TRIM(:search) AS INT) END) or"
+			+ " UPPER(u.first_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(u.last_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')) or"
+			+ " UPPER(h.hospital_department_name) LIKE UPPER(CONCAT('%', TRIM(:search), '%')))", nativeQuery = true)
+	Page<Proposal> findByUserExtraUserIdStatus(Pageable pageable,@Param("user_extra_user_id") Long user_extra_user_id, @Param("search") String search,@Param("status") Boolean status);
+	
 }

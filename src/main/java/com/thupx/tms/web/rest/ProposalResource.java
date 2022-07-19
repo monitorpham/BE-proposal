@@ -45,6 +45,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * REST controller for managing {@link com.thupx.tms.domain.Proposal}.
@@ -363,6 +368,25 @@ public class ProposalResource {
 		Page<Proposal> proposals = proposalRepository.findByUserExtraUserId(pageable, extra.getId(),search);
 		return ResponseEntity.ok(proposals);
 	}
+	
+	
+	@GetMapping("/proposal/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=proposals_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Proposal> listProposals = proposalService.findAll();
+//        log.debug("LISTTTTTTTTTTTTTTTTTTT: {}", listProposals);
+         
+        ProposalExcelExporter excelExporter = new ProposalExcelExporter(listProposals);
+         
+        excelExporter.export(response);    
+    }  
 	
 
 	@GetMapping("/proposals-data-table-all")
@@ -694,94 +718,39 @@ public class ProposalResource {
 		return progressStages;
 	}
 
+	
 	@GetMapping("/get-All-Data-By-Status/{status}")
-	public List<ProposalData2> getAllDataByStatus(@RequestParam Boolean status) {
+	public  ResponseEntity<Page<Proposal>> getAllDataByStatus(@RequestParam int pageNum, @RequestParam int pageSize,
+			@RequestParam(defaultValue = "") String sortBy, Sort.Direction direction,
+			@RequestParam(defaultValue = "") String search,@RequestParam Boolean status) {
 //		log.debug("REST request to get-All-Data-By-Status");
+		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(direction, sortBy));
 		long countDays = 0;
-
-		List<ProgressDTO> progressDTOs = progressService.findAll();
-
-		for (ProgressDTO progressDTO : progressDTOs) {
-			countDays = countDays + progressDTO.getLimit();
-		}
-
-		List<Proposal> proposals = proposalService.findStatus(status);
-		List<ProposalData2> proposalDatas = new ArrayList<>();
-
-		// List<ProgressDTO> progesses = progressService.findAll();
 
 		int group = userService.checkAdmin();
 
-//		log.debug("groupppppppppppppppppppppp: {}", group);
-
 		// super admin
 		if (group == 0) {
-			for (Proposal proposal : proposals) {
-				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
-				if (proposal.isStatus()) {
-					proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-							currentDetaill.getProgress().getContentTask(),
-							proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-							calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
-				} else {
-					proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-							currentDetaill.getProgress().getContentTask(),
-							proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-							calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
-				}
-
-			}
-			return proposalDatas;
+			Page<Proposal> proposals = proposalRepository.findStatus(pageable,search,status);
+			return ResponseEntity.ok(proposals);
 		}
 
 		// to truong
 		if (group != -1) {
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
-			for (Proposal proposal : proposals) {
-				for (UserExtra userExtra : userExtras) {
-					if (proposal.getUserExtra().getId().equals(userExtra.getId())) {
-						ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
-						if (proposal.isStatus()) {
-							proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-									currentDetaill.getProgress().getContentTask(),
-									proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-									calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
-						} else {
-							proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-									currentDetaill.getProgress().getContentTask(),
-									proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-									calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
-						}
-					}
-				}
 
+			for (UserExtra userExtra : userExtras) {
+				Page<Proposal> proposals = proposalRepository.findByUserExtraUserIdStatus(pageable, userExtra.getId(),search,status);
+				return ResponseEntity.ok(proposals);
 			}
-//			log.debug("totruong: {}", group);
-			return proposalDatas;
 		}
 
+		
 		// thanh vien
-		log.debug("totruong: {}", group);
+//		log.debug("totruong: {}", group);
 		UserExtra extra = extraRepository.findById(userService.getUserid()).get();
-		log.debug("extra: {}", extra);
-		for (Proposal proposal : proposals) {
-			if (proposal.getUserExtra().getId().equals(extra.getId())) {
-				ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
-				if (proposal.isStatus()) {
-					proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-							currentDetaill.getProgress().getContentTask(),
-							proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-							calRemainingDate(proposal.getEndDate(), proposal.getStartDate(), ChronoUnit.DAYS)));
-				} else {
-					proposalDatas.add(new ProposalData2(proposal, currentDetaill.getId(),
-							currentDetaill.getProgress().getContentTask(),
-							proposal.getStartDate().plusDays(countDays + proposal.getAdditionalDate()),
-							calRemainingDate(ZonedDateTime.now(), proposal.getStartDate(), ChronoUnit.DAYS)));
-				}
-			}
-		}
-
-		return proposalDatas;
+		Page<Proposal> proposals = proposalRepository.findByUserExtraUserIdStatus(pageable, extra.getId(),search,status);
+		return ResponseEntity.ok(proposals);
 	}
 
 	@PutMapping("/update-All-ProgressDetail-By-ProposalId")
