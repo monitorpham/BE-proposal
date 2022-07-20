@@ -356,7 +356,8 @@ public class ProposalResource {
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
 
 			for (UserExtra userExtra : userExtras) {
-				Page<Proposal> proposals = proposalRepository.findByUserExtraUserId(pageable, userExtra.getId(),search);
+				log.debug("totruong: {}", group);
+				Page<Proposal> proposals = proposalRepository.findByUserExtraEquiqmentId(pageable, userExtra.getEquiqmentGroup().getId(),search);
 				return ResponseEntity.ok(proposals);
 			}
 		}
