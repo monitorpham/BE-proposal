@@ -766,7 +766,7 @@ public class ProposalResource {
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
 
 			for (UserExtra userExtra : userExtras) {
-				Page<Proposal> proposals = proposalRepository.findByUserExtraUserIdStatus(pageable, userExtra.getId(),search,status);
+				Page<Proposal> proposals = proposalRepository.findByUserExtraEquiqmentIdStatus(pageable, userExtra.getEquiqmentGroup().getId(),search,status);
 				return ResponseEntity.ok(proposals);
 			}
 		}
