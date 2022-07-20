@@ -805,21 +805,6 @@ public class ProposalResource {
 
 		List<ProgressDTO> progressDTOs = progressService.findAll();
 
-		List<Proposal> proposals = proposalService.findAll();
-
-//		List<ProgressDTO> progesses = progressService.findAll();
-
-		// super admin
-
-		for (Proposal proposal : proposals) {
-			ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
-			ProposalDTO proposalDTO = proposalService.findOne(proposalId).get();
-			log.debug("log getProgresssssssssssssssSSSSSSSSSS:{}", proposal.getId());
-			log.debug("log getProgresssssssssssssssSSSSSSSSSS:{}", currentDetaill.getProgress().getContentTask());
-			proposalDTO.setCurrentProgressName(currentDetaill.getProgress().getContentTask());
-
-		}
-
 		for (ProgressStage progressStage : progressStages) {
 //			if(!progressStage.getId().equals(new Long(0)) && !progressStage.getId().equals(new Long(8))) {
 			ProgessDetaillDTO detaillDTO = new ProgessDetaillDTO();
