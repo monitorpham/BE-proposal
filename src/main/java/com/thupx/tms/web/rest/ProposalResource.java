@@ -589,7 +589,7 @@ public class ProposalResource {
 				}
 
 			}
-			log.debug("proposalDatasssssss1: {}", proposalDatas);
+//			log.debug("proposalDatasssssss1: {}", proposalDatas);
 			return proposalDatas;
 		}
 
@@ -598,6 +598,7 @@ public class ProposalResource {
 			List<UserExtra> userExtras = extraRepository.findAllByEquiqmentGroupId(Long.valueOf(group));
 			for (Proposal proposal : proposals) {
 				for (UserExtra userExtra : userExtras) {
+					log.debug("IDDDDDDDDDDDDDDDDD: {}", userExtra.getId());
 					if (proposal.getUserExtra().getId().equals(userExtra.getId())) {
 						ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
 						List<ProgessDetaillDTO> progesses = progessDetaillService
@@ -652,20 +653,21 @@ public class ProposalResource {
 
 				}
 //			log.debug("totruong: {}", group);
-				log.debug("proposalDatasssssss: {}", proposalDatas);
+//				log.debug("proposalDatasssssss: {}", proposalDatas);
 				return proposalDatas;
 			}
-
+		}
 			// thanh vien
 			log.debug("totruong: {}", group);
 
 			UserExtra extra = extraRepository.findById(userService.getUserid()).get();
-			log.debug("extra: {}", extra);
+//			log.debug("extra: {}", extra);
+//			log.debug("IDDDDDDDDDDDDDDDDD: {}", extra.getId());
 			for (Proposal proposal : proposals) {
 				if (proposal.getUserExtra().getId().equals(extra.getId())) {
 					ProgessDetaill currentDetaill = getCurrentProgessDetaill(proposal.getId());
 					List<ProgessDetaillDTO> progesses = progessDetaillService.findAllDTOByProposalId(proposal.getId());
-//					log.debug("idddddddd: {}", proposal.getId());
+					log.debug("idddddddd: {}", extra.getId());
 //					log.debug("progessessssssss: {}", progesses.get(2));
 					try {
 						if (progesses.get(1).getEndDate() == null && progesses.get(2).getEndDate() == null
@@ -712,8 +714,8 @@ public class ProposalResource {
 					}
 				}
 			}
-		}
-		log.debug("proposalDatasssssss: {}", proposalDatas);
+		
+//		log.debug("proposalDatassssss11s: {}", proposalDatas);
 		return proposalDatas;
 
 	}
