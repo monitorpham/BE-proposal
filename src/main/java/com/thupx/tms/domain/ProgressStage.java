@@ -10,6 +10,7 @@ public class ProgressStage implements Serializable {
 	private String performBy;
 	private Progress progress;
 	private String note;
+	private String noteAdmin;
 	
 	
 	
@@ -17,7 +18,7 @@ public class ProgressStage implements Serializable {
 		super();
 	}
 
-	public ProgressStage(Long id, ZonedDateTime timeStart, ZonedDateTime timeEnd, String performBy, Progress progress, String note) {
+	public ProgressStage(Long id, ZonedDateTime timeStart, ZonedDateTime timeEnd, String performBy, Progress progress, String note,String noteAdmin) {
 		super();
 		this.id = id;
 		this.timeStart = timeStart;
@@ -25,6 +26,7 @@ public class ProgressStage implements Serializable {
 		this.performBy = performBy;
 		this.progress = progress;
 		this.note = note;
+		this.noteAdmin = noteAdmin;
 	}
 	
 	public Long getId() {
@@ -64,8 +66,12 @@ public class ProgressStage implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-		
+	public void setNoteAdmin(String noteAdmin) {
+		this.noteAdmin = noteAdmin;
+	}
+	public String getNoteAdmin() {
+		return noteAdmin;
+	}	
 	
 	
 	

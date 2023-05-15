@@ -734,9 +734,8 @@ public class ProposalResource {
 		for (ProgessDetaill progessDetaill : progessDetaills) {
 			progressStages.add(new ProgressStage(progessDetaill.getId(), progessDetaill.getStartDate(),
 					progessDetaill.getEndDate(), progessDetaill.getLastModifiedBy(), progessDetaill.getProgress(),
-					progessDetaill.getNote()));
+					progessDetaill.getNote(), progessDetaill.getNoteAdmin()));
 		}
-
 //		Progress completeProgress = new Progress();
 //		completeProgress.setContentTask("Hoàn thành");
 //		
@@ -815,6 +814,7 @@ public class ProposalResource {
 			detaillDTO.setProgressId(progressStage.getProgress().getId());
 			detaillDTO.setProposalId(proposalId);
 			detaillDTO.setNote(progressStage.getNote());
+			detaillDTO.setNoteAdmin(progressStage.getNoteAdmin());
 			detaillDTO.setStartDate(progressStage.getTimeStart());
 			detaillDTO.setEndDate(progressStage.getTimeEnd());
 			detaillDTOs.add(detaillDTO);

@@ -16,12 +16,12 @@ public class ProgessDetaillDTO implements Serializable {
 
     private String note;
 
+    private String noteAdmin;
+
 
     private Long proposalId;
 
     private Long progressId;
-    
-    
     
     public ProgessDetaillDTO() {
 		super();
@@ -32,8 +32,8 @@ public class ProgessDetaillDTO implements Serializable {
 		this.proposalId = proposalId;
 		this.progressId = progressId;
 	}
-
-	public Long getId() {
+	
+    public Long getId() {
         return id;
     }
 
@@ -63,6 +63,14 @@ public class ProgessDetaillDTO implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getNoteAdmin() {
+        return noteAdmin;
+    }
+
+    public void setNoteAdmin(String noteAdmin) {
+        this.noteAdmin = noteAdmin;
     }
 
     public Long getProposalId() {
@@ -106,6 +114,7 @@ public class ProgessDetaillDTO implements Serializable {
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", note='" + getNote() + "'" +
+            ", noteAdmin='" + getNoteAdmin() + "'" +
             ", proposalId=" + getProposalId() +
             ", progressId=" + getProgressId() +
             "}";

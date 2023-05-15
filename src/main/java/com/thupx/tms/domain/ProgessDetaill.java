@@ -29,6 +29,9 @@ public class ProgessDetaill extends AbstractAuditingEntity implements Serializab
     @Column(name = "note")
     private String note;
 
+    @Column(name = "note_admin")
+    private String noteAdmin;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "progessDetaills", allowSetters = true)
     private Proposal proposal;
@@ -85,6 +88,19 @@ public class ProgessDetaill extends AbstractAuditingEntity implements Serializab
         this.note = note;
     }
 
+    public String getNoteAdmin() {
+        return noteAdmin;
+    }
+
+    public ProgessDetaill noteAdmin(String noteAdmin) {
+        this.noteAdmin = noteAdmin;
+        return this;
+    }
+
+    public void setNoteAdmin(String noteAdmin) {
+        this.noteAdmin = noteAdmin;
+    }
+
     public Proposal getProposal() {
         return proposal;
     }
@@ -136,6 +152,7 @@ public class ProgessDetaill extends AbstractAuditingEntity implements Serializab
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", note='" + getNote() + "'" +
+            ", noteAdmin='" + getNoteAdmin() + "'" +
             "}";
     }
 }
